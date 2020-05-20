@@ -1,7 +1,7 @@
 syntax="proto3";
 package service;
 option go_package="api;service";
-option java_package="com.sunjet.rpc.service";
+option java_package="com.sunjet.rpc.api";
 
 message HelloRequest{
   string name = 1;

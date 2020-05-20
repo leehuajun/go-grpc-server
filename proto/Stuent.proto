@@ -1,0 +1,23 @@
+syntax="proto3";
+package service;
+option go_package="api;service";
+option java_package="com.sunjet.rpc.api";
+
+enum Class {
+  C1901=0;
+  C1902=1;
+  C1903=2;
+  C1910=9;
+}
+
+message StudentRequest{
+  Class class=1;
+}
+
+message StudentResponse{
+  int32 students=1;
+}
+
+service StudentService{
+  rpc GetStudentsByClass(StudentRequest) returns (StudentResponse);
+}

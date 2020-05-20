@@ -18,8 +18,9 @@ func main() {
 	rpcServer := grpc.NewServer(grpc.Creds(GetServerCreds()))
 
 	//在RPC服务器中注册服务
-	services.RegisterHelloServiceServer(rpcServer,new(service.HelloService))
-	services.RegisterProductServiceServer(rpcServer,new(service.ProductService))
+	services.RegisterHelloServiceServer(rpcServer, new(service.HelloService))
+	services.RegisterProductServiceServer(rpcServer, new(service.ProductService))
+	services.RegisterStudentServiceServer(rpcServer, new(service.StudentService))
 	//定义一个TCP监听器
 	listener, _ := net.Listen("tcp", ":8081")
 
@@ -28,18 +29,18 @@ func main() {
 }
 
 func GetServerCreds() credentials.TransportCredentials {
-	cert, err := tls.LoadX509KeyPair("cert/server.pem", "cert/server.crt")
+	cert, err := tls.LoadX509KeyPair("cert/server.pem", "cert/server.key")
 	if err != nil {
 		log.Fatal(err)
 	}
 	certPool := x509.NewCertPool()
-	ca, err := ioutil.ReadFile("cert/ca.crt")
+	ca, err := ioutil.ReadFile("cert/ca.pem")
 	if err != nil {
 		log.Fatal(err)
 	}
 	certPool.AppendCertsFromPEM(ca)
 	creds := credentials.NewTLS(&tls.Config{
-		Certificates: []tls.Certificate{cert},   // 服务端证书
+		Certificates: []tls.Certificate{cert}, // 服务端证书
 		ClientAuth:   tls.RequireAndVerifyClientCert,
 		ClientCAs:    certPool,
 	})
